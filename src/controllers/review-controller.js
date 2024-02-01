@@ -1,8 +1,11 @@
 'use strict'
 const repository = require('../repositories/review-repository');
+const authService = require('../services/auth-service');
 
 const requestHandler = async (promise, res) => {
     try {
+        const token = req.body.toker || req.query.token || req.headers['x-access-token'];
+        const decoded = await authService.decodeToken(token);
         const data = await promise();
         res.status(200).send(data);
     } catch (error) {
